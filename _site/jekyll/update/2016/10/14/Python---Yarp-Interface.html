@@ -1,0 +1,24 @@
+<p>In order to get started with the project, it was necessary for me to get used to using YARP in conjunction with python. YARP, to me, sounds like a communication platform that allows for different modules of code, written in different languages to communicate with each other; it provides the tools to allow data to be transferred between these modules robustly.
+The exercises that I carried out in order to master this are listed belows, with a few words about their relevance.</p>
+
+<ul>
+  <li>
+    <p>The first exercise I completed was to create a simply python script that can take in messages from a <em>/write</em> port, and pass these on to a <em>/read</em> port. This exercise outlays the basic functionality of yarp, and how it can be utilised through python.</p>
+
+    <p>The jupyter notebook that contains my code for this exercise can be found <a href="/downloads/basicPython.ipynb">here</a>.</p>
+  </li>
+  <li>
+    <p>Following this, similar functionality was expressed in a different way using a <a href="http://www.yarp.it/classyarp_1_1os_1_1RFModule.html">RF module</a>. This interesting module contains 2 loops that run simulataneously (or to be more technical, in parallel). One of them loops infinitely at intervals that are defined in the class, while the other looks for a command from a <a href="http://www.yarp.it/rpc_ports.html">RPC port</a>, and runs a <em>respond()</em> method when it receives one. <em>respond()</em> is then able to send a reply to the RPC port (it waits for one), and also carry out other functions that are only executed when a command is received.</p>
+
+    <p>If that didn’t make much sense, check out the code <a href="/downloads/pythonRFMod.ipynb">here</a>. In this, I have implemented what was done in the previous exercise, but also made it such that messages are sent to <em>/read</em> only when the command <strong>print</strong> is recieved from the <em>RPC Port</em>.</p>
+  </li>
+  <li>
+    <p>Later on in my project, I will need to make use of information received from a camera in the form of a <em>yarp</em> image. As such, my final exercise for this week was to replace the messages replied in the form of text in the previous exercise with images from my webcam.</p>
+
+    <p>As with the previous exercise, the program is to display the inputs it gets from the yarp port which sends out the data from the webcam (named <em>/grabber</em>) on one output port (named <em>/internalView</em> in my code). A RPC port will still send out commands; when it sends out the command <strong>capture</strong>, a still image of the most recent image sent by <em>/grabber</em> will be shown on a separate port (named <em>/pictureView</em> in my code).   </p>
+
+    <p>In my first attempt, I cheated a little bit, and completed the task without using the processes that would have allowed me to learn what I will need from this exercise. The main point of this exercise was to look at how a yarp image could be imported as a numpy array. The numpy array could then be manipulated and used how I like; this, in other words, allows the images received from a camera to be used as an input source for the code I wrote for this exercise, and for the code I will write in the future. Furthermore, this introduced the code structures that allow for this kind of data transfer; hopefully this practice will be useful in the future when handling different kinds of data.</p>
+
+    <p>In the code <a href="/downloads/imageRFMod.ipynb">here</a>, to prove that I have indeed transferred the yarp image to a numpy array, I have added a block of black pixels on the top left corner to the output video and image.</p>
+  </li>
+</ul>
