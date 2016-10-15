@@ -20,5 +20,7 @@ gem "github-pages", group: :jekyll_plugins
 gem 'jekyll-sass-converter'
 # If you have any plugins, put them here!
 # group :jekyll_plugins do
-gem "jekyll-github-metadata"
+group :jekyll_plugins do
+   gem "jekyll-feed"
+end
 # end
