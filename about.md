@@ -18,3 +18,5 @@ In order to test my method, I will be employing it to the arm of a iCub humanoid
 I hope you enjoy.
 
 Janith
+
+P.S. Please note that I often reference code that I had written in the context of each of the posts, in the posts. Links to code will be provided where necessary, and the posts were written under the assumption that the reader will be able to access the code as he or she is reading the post.
