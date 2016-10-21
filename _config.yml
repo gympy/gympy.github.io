@@ -24,7 +24,7 @@ twitter_username: janith_pet
 github_username:  janithPet
 
 # Build settings
-markdown: kramdown
+markdown: maruku
 theme: minima
 gems:
   - jekyll-feed
