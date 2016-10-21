@@ -11,7 +11,7 @@ This week has been quite an exciting one; hopefully, once you have concluded rea
 
 [GPy](http://github.com/SheffieldML/GPy) is a library that allows for quite easy implementations and uses of gaussian processes in python. It contains methods that allow for regression using Gaussian processes, using standard and widely used covariance kernels also manipulating them - such as summing two kernels, optimizing the hyperparameters, and more in between and beyond. Gaussian process regression, in effect, allows its user to model the inifinite number of curves that can fit a certain set of observations; it provides each of these curves with how likely they are to occur, in the form of a gaussian distribution. This gives this method phenomenal versatility and efficiency in terms of the number of observations needed in machine learning; it will be the main learning method that will be used in this project.
 
- ## First Program
+## First Program
 
 In order to test out how well Gaussian processes work in the problem that is described [here](https://gympy.github.io/about/), it was decided that GPy and OpenAI gym will be used to carry out some prelimilary analyses; since the final goal of the project is in the application of a robotic arm, the problem of the inverted pendulum was thought to be a relevant yet simple starting point.
 
@@ -21,7 +21,7 @@ In it, I am generating random control inputs within set limits of -2 to 2. Envir
 
 A key point to be noted is that the function that is being fitted is the following:
 
-$$x_{n+1} = f(u_n),$$ 
+$x_{n+1} = f(u_n),$
 
 where $x = x(\theta, \dot{\theta}, \ddot{\theta})$ is the state of the object, in this case the pendulum, and $u$ is the control input.
 
@@ -32,7 +32,7 @@ of this exercise was to simply test how a simple model can be learnt by GPy usin
 
 After getting that to work, I made [this](https://github.com/janithPet/FYP/blob/master/Code/Semester1/OpenAI/Learning_2.ipynb). The first point to be made of this program is that it forms a model of the form of:
 
-$$x_{n+1} = f(x_n, u_n)$$
+$x_{n+1} = f(x_n, u_n)$
 
 This representation provides the model with information about how the control input in conjuction with its current state will affect the state to which it will go to; this is more realistic of a dynamic model.
 
