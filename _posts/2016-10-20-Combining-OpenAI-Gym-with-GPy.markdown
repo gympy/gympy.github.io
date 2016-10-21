@@ -54,11 +54,11 @@ The following figures show how the absolute value of the difference between the 
 
 ![Figure1]({{site_url}}/pictures/Combining1.1.gif)
 
-Several observations can be made from these. The first is that resetting the states at every test allows the model to learn faster, given the input states given to it. This needs to be taken with a grain of salt however, because it is likely that the input states that are given to these experiments were limited; by allowing the simulation to be relatively contiuous, the experiments that generated Figure 1 and Figure 3 most likely had a wider *range* of input states.
+Several observations can be made from these. The first is that resetting the states at every test allows the model to learn faster, given the input states given to it. This needs to be taken with a grain of salt however, because it is likely that the input states that are given to these experiments were limited; by allowing the simulation to be relatively continuous, the experiments that generated Figure 1 and Figure 3 most likely had a wider *range* of input states.
 
 This leads on to the next observation. It appears that the error in Figure 1, and perhaps Figure 3 are increasing to begin with, but reduce as more data points are gathered. This can be explained by the fact that the control input provided causes the system to move towards states it had not encountered before, forcing the latent model to predict states in spaces it is unsure about it. However, as more tests are carried out, the simulation generates observations that overlap, improving the model's predictability. A few anomalies occur in Figure 3, particularly in the acceleration term. This is likely due to the system encoutering accelerations that it had not encountered before.
 
-This fact probably also explains why the error, in all 4 figures, appears to be largest in the acceleraition. The accerlation term is most likely to have the largest range of values, and is also likely to be more sporadic in nature. This means that it most likely has the lowest data density, resulting in less efficient learning.
+This fact probably also explains why the error, in all 4 figures, appears to be largest in the acceleration. The acceleration term is most likely to have the largest range of values, and is also likely to be more sporadic in nature. This means that it most likely has the lowest data density, resulting in less efficient learning.
 
 ## Some After Thoughts and Future Work
 
