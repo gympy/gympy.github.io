@@ -21,7 +21,7 @@ In it, I am generating random control inputs within set limits of -2 to 2. Envir
 
 A key point to be noted is that the function that is being fitted is the following:
 
-\\[ x_{n+1} = f(u_n), \\]
+$$ x_{n+1} = f(u_n), $$
 
 where $x = x(\theta, \dot{\theta}, \ddot{\theta})$ is the state of the object, in this case the pendulum, and $u$ is the control input.
 
@@ -32,7 +32,7 @@ of this exercise was to simply test how a simple model can be learnt by GPy usin
 
 After getting that to work, I made [this](https://github.com/janithPet/FYP/blob/master/Code/Semester1/OpenAI/Learning_2.ipynb). The first point to be made of this program is that it forms a model of the form of:
 
-$x_{n+1} = f(x_n, u_n)$
+$$x_{n+1} = f(x_n, u_n)$$
 
 This representation provides the model with information about how the control input in conjuction with its current state will affect the state to which it will go to; this is more realistic of a dynamic model.
 
