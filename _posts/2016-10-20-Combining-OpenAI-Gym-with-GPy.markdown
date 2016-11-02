@@ -3,7 +3,8 @@ layout: post
 title:  "Combining OpenAI Gym with GPy - The Start"
 date:   2016-10-20 20:30:05 +0100
 categories: jekyll update
-use_math: true
+
+
 ---
 This week has been quite an exciting one; hopefully, once you have concluded reading this piece, you will feel just as excited. Having completed the task of getting used to interfacing yarp with python, my objective for the week was to bridge two python modules: OpenAI gym and GPy.
 
