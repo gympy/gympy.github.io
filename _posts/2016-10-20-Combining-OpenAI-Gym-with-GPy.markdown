@@ -22,7 +22,7 @@ In it, I am generating random control inputs within set limits of -2 to 2. Envir
 
 A key point to be noted is that the function that is being fitted is the following:
 
-$$ x _ {n+1} = f(u _ n) $$,
+$$x_{n+1} = f(u_n),$$
 
 where $x = x(\theta, \dot{\theta}, \ddot{\theta})$ is the state of the object, in this case the pendulum, and $u$ is the control input.
 
