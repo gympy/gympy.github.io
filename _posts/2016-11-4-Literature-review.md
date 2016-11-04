@@ -242,9 +242,9 @@ term expected reward; notationally, by following $\pi^\*$, we will
 produce a long term reward that satisfies the following for the
 state-value function and the action-value function respectively.
 
-$$\label{eq:optimal_state} V^*(s) = \mathrm{max}(V^\pi(s))$$
+$$\label{eq:optimal_state} V^\*(s) = \mathrm{max}(V^\pi(s))$$
 
-$$\label{eq:optimal_action} Q^*(s,a) = \mathrm{max}(Q^\pi(s,a))$$
+$$\label{eq:optimal_action} Q^\*(s,a) = \mathrm{max}(Q^\pi(s,a))$$
 
 This logic holds because the value functions define a partial ordering of the
 policies; if $\pi_1$ can produce $V_1$ or $Q_1$, and $\pi_2$ can produce
@@ -253,21 +253,21 @@ $Q_1 > Q_2$, then there must exists a policy $\pi^\*$ that produces
 $max(V^\pi(s))$ or $max(Q^\pi(s,a))$.
 
 Due to the recursive nature of the value functions (which is a result of
-Markov property), it is possible to find an expression for $V^*(s)$ in
+Markov property), it is possible to find an expression for $V^\*(s)$ in
 terms of the transistion function and the reward function. The reward
 function computes the expected reward from going from state $s_t$ to
 state $s_{t+1}$ after following an action $a_t$, as shown in the equation below.
 
 $$\label{eq:reward_function} L^a_{ss^\prime} = E(r_{t+1}|s_t = s, a_t = a, s_{t+1} = s^\prime)$$
 
-This expression for $V^*(s)$ is called the *Bellman Optimality
+This expression for $V^\*(s)$ is called the *Bellman Optimality
 Equation* [@rl-sutton].
 
-$$\label{eq:value_bellman_opt} V^*(s) = \underset{a}{\mathrm{max}}\sum_{s^\prime}^{}{M^a_{ss^\prime}[L^a_{ss^\prime} + \gamma V^*(s^\prime)]}$$
+$$\label{eq:value_bellman_opt} V^\*(s) = \underset{a}{\mathrm{max}}\sum_{s^\prime}^{}{M^a_{ss^\prime}[L^a_{ss^\prime} + \gamma V^\*(s^\prime)]}$$
 
 Similarly, it can be expressed for the action-value function as the equation below.
 
-$$\label{eq:action_bellman_opt} Q^*(s,a) = \sum_{s^\prime}^{}{M^a_{ss^\prime}[L^a_{ss^\prime} + \gamma \: \underset{a^\prime}{\mathrm{max}}\:Q^*(s^\prime,a^\prime)]}$$
+$$\label{eq:action_bellman_opt} Q^\*(s,a) = \sum_{s^\prime}^{}{M^a_{ss^\prime}[L^a_{ss^\prime} + \gamma \: \underset{a^\prime}{\mathrm{max}}\:Q^\*(s^\prime,a^\prime)]}$$
 
 As such, value function methods make use of these equations to obtain
 the optimal policy. The main algorithms that have been used in this
