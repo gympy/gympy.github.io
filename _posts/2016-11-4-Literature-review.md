@@ -173,7 +173,7 @@ no more will be said about this matter.
 
 ![Figure1]({{site_url}}/pictures/model_based_free.svg)
 
-Figure \[fig:model\_based\_free\] succinctly illustrates the differences
+The figure above succinctly illustrates the differences
 between the paths taken by: (1) model free learning and (2) model based
 learning. In model free learning, the agent does not attempt to build
 knowledge of the environment, but rather uses the experience it gains
@@ -281,7 +281,7 @@ about the other methods can be found in [@rl-sutton] and [@2013-kober].
 
 The state value function and the action value function can be computed
 as a recursive sum as expressed by the equations below respectively [@rl-sutton; @2013-kober; @2009-deisenroth]. These
-is called the *Bellman equations*.
+are called the *Bellman equations*.
 
 $$\label{eq:value_bellman} V^\pi(s) = \sum_{a}^{}{\pi(s,a)}\:\sum_{s^\prime}^{}{M^a_{ss^\prime}[L^a_{ss^\prime} + \gamma V^\pi(s^\prime)]}$$
 
@@ -376,7 +376,7 @@ network [@2011-deisenroth; @1991-park; @1993-park].
 
 When carrying out policy search algorithms, three main considerations,
 or rather challenges need to be addressed. These, as can be guessed from
-Figure \[fig:model\_based\_free\], are the problems of the structure of
+the last figure, are the problems of the structure of
 the model the agent needs to learn, how to use these to generate long
 term predictions of states and rewards, and how to the policy can be
 updated in light of these; namely, these are model learning, internal
