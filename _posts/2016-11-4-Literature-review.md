@@ -14,15 +14,13 @@ N.B
 Literature Review: A Taxonomy of Reinforcement Learning {#chap:Lit_review}
 =======================================================
 
-Machine learning can be thought of as subset, of artificial intelligence
-that makes use of statistical methods to allow machines to show features
-of learning, such as the inference of functional relationships between
+Machine learning can be thought of as subset of artificial intelligence
+that makes use of statistical methods to allow machines to emulate aspects 
+of 'learning', such as the inference of functional relationships between
 data [@ml-girolami], and improvement with experience [@ml-mitchell].
-There is often considered to be three main categories of machine
-learning: supervised learning, unsupervised learning and reinforcement
-learning [@2005-lawrence]. In supervised learning, structure is often
-given to data before the learning exercise, for example in the form of
-an input and an output; in imitation learning for example, the agent is
+Machine learning is often subdivided into three main categories: supervised learning, unsupervised learning and reinforcement
+learning [@2005-lawrence]. In supervised learning, a structure is imposed on data before the learning exercise, for example in the form of
+an input and an output (or label); in imitation learning for example, the agent is
 provided with examples of strategies and policies that have already been
 deemed to be good by its 'teacher' [@2013-kober]. In unsupervised
 learning, there is no structure given to the data, and the learning
