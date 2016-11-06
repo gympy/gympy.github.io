@@ -30,15 +30,14 @@ unstructured data is given structure through an iterative interaction
 with an 'environment' such that a certain goal is reached through the
 maximisation of a reward [@2005-lawrence; @rl-sutton; @2010-deisenroth].
 
-Due to its relevance for this project, I will be presenting the latest
-research that has been done with regard to reinforcement learning in the
-rest of this review. First, the main flow diagram of reinforcement
+Due to its relevance for this project, in the rest of this review I will be presenting the latest
+research that has been done with regard to reinforcement learning. First, the main flow diagram of reinforcement
 learning will the expressed, followed by a taxonomy of different methods
 developed for completing each of the components of the flow diagram.
 Finally, I will be presenting interesting research that has been carried
 out with regards to the use of Gaussian Process Latent Variable Models
 (GP-LVMs) in the context of reinforcement learning, and why it will form
-the main focus of this project.\
+the main focus of this project.
 
 Reinforcement Learning: What is it? {#sec:rl-intro}
 -----------------------------------
@@ -46,7 +45,7 @@ Reinforcement Learning: What is it? {#sec:rl-intro}
 Reinforcement learning (RL) consists of an *agent* interacting with its
 *environment* by carrying out *actions*. The agent then receives signals
 (which include the environment's new *state* and *reward*) back from the
-environment which it then uses to select the action it will make next,
+environment. It then uses these signals to select its next action,
 such that the reward is maximised over time. This is illustrated in
 the figure below.
 
@@ -63,7 +62,7 @@ be deterministic, where $a_t = \pi_t(s_t)$, or probabilistic, the action
 is selected from a probability distribution defined by $\pi(a_t|s_t)$.
 Once $a_t$ is enacted, the environment will provide the agent with the
 next state $s_{t+1}$, along with a reward $r_{t+1}$. The main goal of
-RL, or the Rl problem then is to find the policy that will maximise the
+RL, or the RL problem then is to find the policy that will maximise the
 long term sum of rewards $R_t$ (equation below)
 [@rl-sutton; @2013-kober]. This is called the optimal policy $\pi^\*$; RL
 algorithms attempt to find $\pi^\*$ using the reward signals by changing
@@ -71,7 +70,7 @@ its policy as it gains experience [@rl-sutton].
 
 $$R_t = r_{t+1} + r_{t+2} + ... +r_T$$
 
-In order to do this, the agent must be able to evaluate how *good* it is to be in a certain state with the current policy in terms of the expected long term rewards. In other words, the *value* of being in state $s$ is the long
+To do this, the agent must be able to evaluate how *good* it is to be in a certain state with the current policy in terms of the expected long term rewards. In other words, the *value* of being in state $s$ is the long
 term reward that is expected by following the current policy after
 starting from $s$ [@rl-sutton; @2016-kaiser]. This is given by the equation below. This is called the *state-value function*.
 
@@ -86,10 +85,9 @@ the current policy. It is given by the equation below.
 
 $$\label{eq:action_value} Q^\pi(s,a) = E(R_t|s_t = s,a_t=a) = E(\sum_{k=0}^{K}{\gamma^kr_{t+k+1}|s_t=s, a_t=a})$$
 
-The framework of RL provides great flexibility in terms of where it can
-be applied to. The time step does not necessarily need to relate to
+The framework of RL provides great flexibility in terms of application domains. The time step does not necessarily need to relate to
 fixed intervals of time, but can often be individual steps in a decision
-making process [@rl-sutton]. Furthermore it is often the case that no
+making process [@rl-sutton]. Further, it is often the case that no
 prior task-specific knowledge is needed; through the process of trials,
 the algorithm gains the experience it needs to have to find the best
 path to achieve its goal [@2010-deisenroth], and it does this without
@@ -103,10 +101,10 @@ spectrum of one [@2013-kober].
 
 ### Key assumptions in Reinforcement Learning {#sec:rl_assumptions}
 
-Before moving on, there are some key concepts that need to be addressed
+There are some key concepts that need to be addressed
 in the context of RL.
 
--   The first of these is the agent-environment boundary. The boundary
+-   The first of these is the *agent-environment boundary*. The boundary
     between the two does not necessarily need to be physical
     [@rl-sutton]. More often than not, the agent is simply an abstract
     construct that is the decision maker, and the physical systems that
@@ -124,8 +122,7 @@ in the context of RL.
     potentially know everything about its environment, and yet not be
     able to control everything [@rl-sutton].
 
--   <span>A common assumption in RL algorithms is that the states of
-    system have the Markov Property. This property states that knowledge
+-   <span>A common assumption in RL algorithms is that the state evolution of the system exhibits the *Markov property*. This property states that knowledge
     of the current state is sufficient to make decisions that also need
     to take into account all the historical states that were necessary
     to be at the current state. Mathematically speaking, a state is said
@@ -136,18 +133,17 @@ in the context of RL.
 
     $$\label{eq:markov_state} P(s_{t+1} = s^\prime, r_{t+1} = r^\prime | (s_t,a_t))$$
 
-    This assumption is powerful as it allows for a RL algorithm to be
+    This assumption  allows for a RL algorithm to be
     made simpler, as it only needs to take into account the current
     state to predict the next state and reward when searching for the
     optimal policy. A reinforcement learning task that consists of
-    Markov states is called a Markov Decision Process (MDP)
+    Markov states is called a Markov decision process (MDP)
     [@rl-sutton].</span>
 
-### The many faces of Reinforcement Learning {#sec:rl_classes}
+### The Many Faces of Reinforcement Learning {#sec:rl_classes}
 
-Due to the generality of RL and its applications, there are many ways by
-which the different algorithms that have been developed in light of it
-can be categorised. These categorisations are shown in the figure below.
+Due to the generality of RL and its applications, there are many ways in
+which the different algorithms that have been developed. These categorisations are shown in the figure below.
 
 ![Figure1]({{site_url}}/pictures/rl-classification.svg)
 
@@ -195,39 +191,35 @@ mechanical systems. This can lead to long experimentation times, as well
 as wear and tear of the physical components. For example, non-optimal
 policies of a bipedal robot could cause severe damage as a result of
 falling; robotic cars can could cause crashes, which could be fatal to
-both it and third-party observers. Model based methods however, will be
+both its passengers and third-parties. Model based methods would be
 able to carry out offline simulations to find currently best optimal
 policy, and only use these on the mechanical system; this has the
 advantages of being able to find the optimal policy with minimal
-interactions with the real mechanical system. Model based methods do
-however pose the problem of uncertainties caused by assumptions in the
-model created; this will be dealt with in Section
+interactions with the real mechanical system. However, model based methods do pose the problem of uncertainties caused by assumptions in the model created; this will be dealt with in Section
 \[sec:policy\_search\_methods\], and will form a major part of this
 project. As such, for the most part of this project, model free methods
-will not be used. For completion however, some examples of model free
+will not be used. For completeness some examples of model free
 methods will be mentioned in this chapter.
 
-In [@rl-sutton], there is a clear distinction between *learning* and
+In [@rl-sutton], there is a careful distinction between *learning* and
 *planning*; the former is where real experience is used via direct
 interaction with the environment, while the latter is where simulated
 experience is used via interaction with the model of the environment, to
-then interact with the environment to further update the model. However,
-in the present work, due to a model based method being used for the most
-part, the term *learning* will be used to mean *planning* as defined by
-[@rl-sutton].
+then interact with the environment to further update the model. In this work, due to a model based method being used for the most
+part, the term *learning* will be used to mean *planning* as defined by [@rl-sutton].
 
 Specific literature that has been used to develop efficient methods of
 creating this model of the environment will discussed in a later
 section.
 
-#### Value Function methods vs Policy Search methods
+#### Value Function Methods vs Policy Search Methods
 
-This classification describes the main strategies used by RL algorithms
-to carry out its main function of finding the optimal policy. Due to its
+This subdivision characterizes the main strategies used by RL algorithms
+to carry out their main function of finding the optimal policy. Due to its
 importance, the next two sections provide the main strategy used by
 each, and list and describe the most widely used, and some new
 algorithms for each. Proceeding this, each will be compared with respect
-to their application in robotic motion problems.\
+to their application in robotic motion problems.
 
 Reinforcement Learning: Value Function Methods {#sec:value_function_methods}
 ----------------------------------------------
@@ -258,8 +250,8 @@ state $s_{t+1}$ after following an action $a_t$, as shown in the equation below.
 
 $$\label{eq:reward_function} L^a_{ss^\prime} = E(r_{t+1}|s_t = s, a_t = a, s_{t+1} = s^\prime)$$
 
-This expression for $V^\*(s)$ is called the *Bellman Optimality
-Equation* [@rl-sutton].
+This expression for $V^\*(s)$ is called the *Bellman optimality
+equation* [@rl-sutton].
 
 $$\label{eq:value_bellman_opt} V^\*(s) = \underset{a}{\mathrm{max}}\sum_{s^\prime}^{}{M^a_{ss^\prime}[L^a_{ss^\prime} + \gamma V^\*(s^\prime)]}$$
 
@@ -269,11 +261,9 @@ $$\label{eq:action_bellman_opt} Q^\*(s,a) = \sum_{s^\prime}^{}{M^a_{ss^\prime}[L
 
 As such, value function methods make use of these equations to obtain
 the optimal policy. The main algorithms that have been used in this
-regard include dynamic programming, Monte Carlo methods and Temporal
-Difference (TD) methods. To remain concise, only dynamic programming
-will be discussed due to a piece of work that uses this algorithm to
-introduce a key concept that will be important to the present work. More
-about the other methods can be found in [@rl-sutton] and [@2013-kober].
+regard include dynamic programming, Monte Carlo methods and temporal
+difference (TD) methods. To remain concise, we will focus principally on dynamic programming in this review. More
+about the other approaches can be found in [@rl-sutton] and [@2013-kober].
 
 ### Dynamic Programming
 
@@ -300,20 +290,20 @@ steps [@rl-sutton].
 These two steps have been called *policy evaluation* and *policy
 improvement* respectively, and the process of finding the optimal policy
 through these is called *policy iteration*
-[@rl-sutton; @2009-deisenroth]. A key drawback of is that it requires
+[@rl-sutton; @2009-deisenroth]. A key drawback of policy iteration is that it requires
 several iterative computations in each of its processes. A way around
 this is to use *value iteration*, whereby policy evaluation and policy
 improvement are combined by directly updating the value function based
-on the Bellman Optimality Equation [@rl-sutton; @2013-kober]. This process can
+on the Bellman optimality equation [@rl-sutton; @2013-kober]. This process can
 dramatically reduce the number of iterations required for convergence.
 
-Typically, if this algorithm is applied to a MDP with fully known
+Typically, if this algorithm is applied to a Markov decision process with fully known
 transition dynamics, it is indistinguishable from optimal control
 [@2009-deisenroth; @ur-tedrake]. As such dynamic programming has many
 applications in varying fields [@ur-tedrake].
 
 In [@2009-deisenroth] and [@2008-deisenroth], the authors suggest the
-approximation of the optimality equations through the use of gaussian
+approximation of the optimality equations through the use of Gaussian
 process (GP) regression. Through their Gaussian process dynamic
 programming algorithm (GPDP), they create two value function GP models
 using training data, which are then used to predict the values for the
@@ -332,7 +322,7 @@ programming loop. Due to the use of probabilistic approximations of
 these models, both algorithms were capable of achieving higher data
 efficiency than classical dynamics programming. This will be a recurring
 theme caused by the use of GPs; the theory on GPs and their advantages
-will be discussed in a later chapter.\
+will be discussed in a later chapter.
 
 Reinforcement Learning: Policy Search Methods {#sec:policy_search_methods}
 ---------------------------------------------
@@ -340,7 +330,7 @@ Reinforcement Learning: Policy Search Methods {#sec:policy_search_methods}
 In the previous section, the algorithms discussed were designed around
 the notion of a value function. An alternative method of carrying out
 reinforcement learning is to place an emphasis on the policy itself.
-Thusly, policy search methods parameterise the policy in terms of a
+Thus policy search methods parameterise the policy in terms of a
 parameter space $\Theta$, where the policy is then a function of
 $\theta \in \Theta$ [@2013-kober; @2011-deisenroth]. As such, in policy
 search methods, the optimal policy is found by exploring the parameter
@@ -349,7 +339,7 @@ reward. In this way, a value function need not be found or approximated.
 
 A key advantage of this, particularly for applications in the field of
 robotics, is that it provides better scalability to high dimensional
-problems, which is often the case in robotics, reducing the dimension of
+problems, which are common in robotics, reducing the dimension of
 the space that is searched [@2013-kober; @2011-deisenroth]. That is,
 instead of searching the entire state and action spaces, the algorithm
 only needs to search the parameter space, which more often than not, can
@@ -403,13 +393,13 @@ trigonometric often have a standard shape and are limited to problems
 that behave as such; take for example the problem of trying to fit data
 that behaves quadratically using a linear model.
 
-LWR methods build upon the ideas of bayesian learning used for in linear
+LWR methods build upon the ideas of Bayesian learning used for in linear
 regression models (as given by the equation below for
 the case of the transition dynamics).
 
 $$\label{eq:linear_regression} s_{t+1} = [s_t,a_t]^T\phi + \mathit{w}, \quad \mathit{w} \sim \mathcal{N}(0,\Sigma_\mathit{w})$$
 
-It does this by equipping weights to every test input that is calculated
+It does this by equipping weights to every test input that are calculated
 as some function of the distance between the test input and a training
 point. These functions could be gaussian shaped [@2011-deisenroth],
 exponential, quadratic to name a few, utilising unweighted euclidean
@@ -419,15 +409,13 @@ find a regression based on locally linear approximations of the
 underlying function [@2011-deisenroth], such that a cost defined as some
 sum of weighted differences between points is minimised [@1997-atkeson].
 
-GPs will be discussed in a later section.
+### Making Long Term Predictions
 
-### The problem of making long term predictions
-
-This next problem relates to how, given that the model is known for
-example through the methods discussed in the previous section, long term
+This next problem relates to how, given that the model is known, for
+example, through the methods discussed in the previous section, long term
 predictions of the environment's state progression can be made. In
 [@2011-deisenroth] it is stated that there are two main methods that
-have been utilised: sampling based trajectory prediction nd
+have been used: sampling based trajectory prediction and
 deterministic approximate inference.
 
 The former of these can be best thought of as recursively evaluating the
@@ -451,7 +439,7 @@ of the agent. That is, find
 
 $$\label{eq:trajectory_distribution} P(\tau), \quad \text{where} \: \tau = (s_0, s_1, ... ,s_T)$$
 
-Therefore, in order to find the probability distribution $P(s_{t+1})$,
+Therefore, to find the probability distribution $P(s_{t+1})$,
 it is necessary to marginalise the joint distribution of $P(s,a)$, which
 is used in the transition dynamics. This operation can be given by the
 following integral.
@@ -461,13 +449,13 @@ $$\label{eq:marginalisation_main} P(s_{t+1}) = \iint P(s_{t+1}|s_t,a_t)P(s_t,a_t
 If the transition function is nonlinear, and $P(s_{t+1})$ is
 non-gaussian, this integral is analytically intractable
 [@2011-deisenroth]. The solution to this is to then approximate
-$P(s_{t+1})$ as a gaussian
+$P(s_{t+1})$ as a Gaussian
 $\mathcal{N}(s_{t+1}|\mu^s_{t+1},\Sigma^s_{t+1})$, the mean
 $\mu^s_{t+1}$ and covariance $\Sigma^s_{t+1}$ of which can be calculated
-through various methods, the most common of which are linearisation,
+through various methods. The most common methods are linearisation,
 sigma-point methods and moment-matching [@2011-deisenroth].
 
-### The problem of policy updating
+### Policy Updating
 
 The final step in policy searching is to then make use of the model
 learned and the long term predictions made to update the policy such
@@ -516,15 +504,15 @@ called PILCO (Probabilistic Inference for Learning Control), that will
 form the main starting point for the present work. PILCO contains three
 layers that essentially address each of the problems mentioned in
 Section \[sec:policy\_search\_methods\]; the bottom layer learns a
-gaussian process model of the transition dynamics, the intermediate
+Gaussian process model of the transition dynamics, the intermediate
 layer then uses either linearisation or moment-matching to estimate the
 probability distribution for the transition function and
 uses this to carry out policy evaluation, and the top layer finally
 carries out policy updating by using analytical gradient evaluation. The
 framework uses either a simple linear or a non-linear RBF network as its
 initial policy. The cost function (the negative reward function) in this
-framework is defined as the euclidean distance between the current state
-and the goal terminal state mapped on to gaussian shape.
+framework is defined as the Euclidean distance between the current state
+and the goal terminal state mapped on to Gaussian shape.
 
 In [@2015-deisenroth], this framework was tested in a variety of
 problems, including classical reinforcement learning problems like that
@@ -539,12 +527,12 @@ For the cart pole problem, PILCO performed several orders of magnitude
 better than existing methods.
 
 The main reason for PILCO's success is its use of probabilistic
-modelling and inferencing, in particular with GPs. The power of GPs is
+modelling and inferencing, in particular with Gaussian processes. The power of GPs is
 that they provide a probability distribution over functions
 [@2005-lawrence; @2016-kaiser; @2010-deisenroth]. That is, it provides a
 representation of all the possible functions that can fit the training
 data, and essentially ranks them according to how likely they are to
-occur. Thusly, GPs allow for a lot unknown structures of the data set to
+occur. Thus, GPs allow for a lot of unknown structures from the data set to
 be represented within itself, reducing significantly the errors of model
 bias, and allowing the processes that follow to be more data efficient.
 
@@ -565,9 +553,8 @@ velocity.
 
 ### Miscellaneous methods
 
-These works aren't as important to the present work as those listed
-previously; they were however too interesting to not mention, and
-present some other faces of reinforcement learning that was not covered
+These works aren't as important to the the direction in this thesis as those listed
+previously; however they provide important background material and highlight some other aspects of reinforcement learning that  have not yet been covered
 in this review.
 
 #### From Pixels to Torques
