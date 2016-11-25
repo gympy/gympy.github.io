@@ -1,0 +1,51 @@
+---
+layout: post
+title:  "A New Algorithm with a few Bumps"
+date:   2016-11-24 20:30:05 +0100
+categories: jekyll update
+---
+
+A new algorithm: how is a different?
+-----------------------------------
+Over the past 20 days since my last update, I have been trying to implement a RL algorithm of the likes as shown in the flow diagram below.
+
+![Figure1]({{site_url}}/pictures/Learning_5/flowDiagram_l5.svg)
+
+As mentioned in the literature review from my previous [post](https://gympy.github.io/jekyll/update/2016/11/03/Literature-review.html), I found that the PILCO framework closely represented the goals of my project. It both assumed no prior knowledge regarding the environment, and was very data efficient. Note that this is a model based policy search RL algorithm. The algorithm shown previously differs in that it learns the dynamics model, in this case the Gaussian Process (GP) model at the same time as carrying out the policy optimisation; it's a hybrid model free/ model based algorithm.
+
+To put this simply, the algorithm contains two distinct phases that are separated by how well the GP model can predict the states that the agent thinks the environment will encounter through experience. In the first phase, the GP model is not very good at this, and so, the agent will directly use real system to find the best policy parameters. Once the GP model is accurate in terms of being below a predetermined error threshold, the program switches to using it instead of the real system in the optimisation.
+
+In PILCO, the GP is used throughout to carry out the optimisation, and is updated with new data after the optimal policy parameters have been found using the current model. By doing this, any errors in the GP model will propagate through the optimisation, providing sub-optimal policy parameters. In the method presented here however, optimisation cycles are not wasted on an inaccurate GP model.
+
+Furthermore, in PILCO, sub-optimal policies are used iteratively to update the GP model with new data points that each of those policies submit. Thusly, it assumes that the current GP model is accurate, finds the optimal policy given this GP model, then tries this optimal policy out. In finding that this does not satisfy the goal of the task, it uses new updated GP model to try again. This loop continues until the goal is satisfied. A potential issue with this is that the errors in the GP that propagate through to the truly sub-optimal policy parameters, which then in turn provide the additional training data points used to make the GP model better, might never allow the GP model to learn accurately, the state and action space it needs to to succeed in the given the task. In other words, it can be said that the quality of data that could be used from PILCO is bad.
+
+The quality of the data can be thought as being how closely the GP model is able to emulate the system given the data. For example, it is most likely that data taken from a domain of say $ [10,100]$ for a problem that makes use of inputs from $[0.1,1]$ might not be quite representative. However, conversely, this might not matter if the underlying function is periodic. Thusly, generally speaking, the quality of data is how well they represent the function at the required domain. The algorithm presented here alleviates this issue by using the true system until the GP model is satisfactorily accurate, thus providing data of higher quality. It should be noted that the quality of data is determined by several other factors, such as the regression model itself, the number of data points used, etc; these will not be dwelled on here.  
+
+Given this mechanism however, the algorithm could run the risk of making too much use of the real system, thus negating the benefits of model based methods for the present applications. However, it can be argued that in order to learn the dynamics of the system, it is also necessary to use data of a certain number to train the GP model. Given a certain quality of data, one will need a certain number of such data to appropriately learn the training space. As such, if we assume that the quality of data taken from both algorithms is the same (thought is has been argued it is not previously), then one can conclude that the same number of data points is necessary to learn an equally accurate model. Therefore, through its differing mechanisms, both algorithms would use similar numbers of data points from the real system.
+
+The bumps
+-----------------------------------
+
+An implementation of this algorithm can be found [here](https://github.com/janithPet/FYP/blob/master/Code/Semester1/gympy_1/Learning_5.ipynb). In this, the algorithm above attempts to use a linear policy, defined as:
+
+$$ a_t = s_{t,1}\theta_1 + s_{t,2}\theta_2  +  s_{t,3}\theta_3 + \theta_4 $$
+
+where the $\theta$ terms are the policy parameters that are to be optimised.
+
+Since this is a linear policy, the problem that the algorithm was given was that of keeping an inverted pendulum upright, after starting from with $\pm 5^0$ from the unstable node; its goal is to maximise the number of time steps it holds the pendulum within this range. Now the algorithm works, because of the fact that it uses a model free method to begin with, although this take quite a few loops to find an optimal solution.
+
+But the main issue is that the GP model seem does not seem to learn well enough. Take a look at the graphs below:
+
+![Figure2]({{site_url}}/pictures/Learning_5/4874-datapoints.svg)
+![Figure2]({{site_url}}/pictures/Learning_5/7148_datapoints.svg)
+
+In the first, the GP model was update every 500 data points, while in the latter, it was updated every 1000. As can be seen, there does not appear to be any significant improvement in the accuracy. The latter was plotted using the algorithm for [here](https://github.com/janithPet/FYP/blob/master/Code/Semester1/gympy_1/GP_convergence.ipynb).
+
+For the first graph, the distribution of the input states that were used are plotted below:
+
+![Figure3]({{site_url}}/pictures/Learning_5/actions-Hist-1.svg)
+![Figure4]({{site_url}}/pictures/Learning_5/Cos-Hist-1.svg)
+![Figure5]({{site_url}}/pictures/Learning_5/Sin-Hist-1.svg)
+![Figure6]({{site_url}}/pictures/Learning_5/Vel-Hist-1.svg)
+
+The next week or so will be used to identify whether this is simply the case that the GP model just needs more data points, or whether there is something more fundamentally wrong with the implementation. Is there a way to make it learn faster?
