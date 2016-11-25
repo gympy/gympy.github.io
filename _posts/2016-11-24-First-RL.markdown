@@ -43,7 +43,7 @@ In the first, the GP model was update every 500 data points, while in the latter
 
 For the first graph, the distribution of the input states that were used are plotted below:
 
-![Figure3]({{site_url}}/pictures/Learning_5/actions-Hist-1.svg)
+![Figure3]({{site_url}}/pictures/Learning_5/Actions-Hist-1.svg)
 ![Figure4]({{site_url}}/pictures/Learning_5/Cos-Hist-1.svg)
 ![Figure5]({{site_url}}/pictures/Learning_5/Sin-Hist-1.svg)
 ![Figure6]({{site_url}}/pictures/Learning_5/Vel-Hist-1.svg)
