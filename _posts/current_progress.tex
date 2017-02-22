@@ -1,0 +1,64 @@
+\chapter{Current Progress}
+\section{Proposed Solution} \label{sec:proposed_solution}
+
+Similar to the PILCO framework, a model based policy search reinforcement algorithm is to be used. This model will be defined as a Gaussian process with a kernel that is to determined. Furthermore, the policy will be first defined as parametric and linear, and will later be defined as a RBF-network. The present work will defer from the PILCO framework in terms of how it will cascade one-step predictions, how the search for the optimal policy parameters is carried out, and potentially the ratio of use of the real system and the emulator. 
+
+Figure \ref{fig:proposed_solution} shows a preliminary algorithm that could be used. 
+
+\begin{figure} \centering \scalebox{0.5} {\includegraphics{proposed_solution.eps}}\caption{A flow diagram for a proposed algorithm.}\label{fig:proposed_solution}
+\end{figure}
+
+In this algorithm, a model-free method will be used until the world model is sufficiently accurate. Then, the algorithm will start using this world model for further searches for the optimal policy parameters. This algorithm has yet to be properly tested; some failed attempts at using it are given in Appendix \ref{ap:failed_attempts}.
+%
+\\
+%
+\section{GYMPY: An interface between OpenAI Gym and GPy} \label{sec:gympy_intro}
+
+As mentioned in Section \ref{sec:project_objectives}, a key objective for this project was to develop an interface between OpenAI gym and GPy. The interface was developed as set of functions in a library entitled \emph{gympy}. The functions of this library deal with reconciling the different data types and structures that are used between each. GPy for the most part, uses \emph{numpy} arrays with defined dimensions, and the columns and rows depicting the dimensions of the data and the observations made, respectively. On the other hand, OpenAI gym uses data structures called spaces; these are classified for data with different properties. As an example, the inverted pendulum, \emph{Pendulum-v0} makes use of \emph{Boxes($n$)} which are defined for a continuous space of $n$ dimensions between set limits. On the other hand, the \emph{Discrete($p$)} shape, as the name suggests, contains $p$ variables that take discrete values, again within set limits. Since different environments within OpenAI gym use different spaces, gympy provides functions that within themselves, reconcile for the differences and provide consistent outputs that can then be used with GPy. The library can be found on github.
+
+For the rest of this chapter, the positive definite kernel that was used for the GP regression was the RBF kernel \cite{gp-carl}. This was as suggested in \cite{2015-deisenroth}.
+
+In order to test the functionality of gympy, it was used to identify how well a Gaussian process learned a limited domain of the inverted pendulum in OpenAI gym. This problem contains 3 states, $cos(\theta)$, $sin(\theta)$ and $\dot{\theta}$, where $\theta$ is the angle of the pendulum measured from the inverted position. The world model is defined to be Markov, and it represented as Equation \ref{eq:world_model}.
+
+\begin{equation} \label{eq:world_model} s_{t+1} = f_w(s_t,a_t) \end{equation}
+
+ where $f_w$ is the world model. It's current accuracy is defined as Equation \ref{eq:prediction_error}, which is the percentage error in the prediction made by $f_w$.
+ 
+ \begin{equation} \label{eq:prediction_error} \mathrm{error}(\%)= \frac{f_w(s_{t+1},a_{t+1}) - f_t(s_{t+1},a_{t+1})}{f_t(s_{t+1},a_{t+1})} \times 100 \end{equation}
+ 
+where $f_t$ is the real system. This is essentially the difference between the predicted and actual next state expressed as a percentage of the actual next state. This method was used to identify how well the world model was learning because the problem has a dimensionality greater than 3; this made it easier to visualise the advancement of the process. The simulation from OpenAI was reset every iteration such that a new and random initial state was used; this was run up to 100 iterations, and the Gaussian process world model was updated at every iteration. 
+
+\begin{figure} \centering \scalebox{0.45} {\includegraphics{100_reset_1_error.eps}}\caption{The plot of percentage error vs the number of iterations. For this particular problem, the number of iterations also equals the number of training data points given to the GP; this doesn't necessarily equal to the number of unique data points however. Note that this is just a single run of the program.}\label{fig:100_reset_1}
+\end{figure}
+
+As shown in Figure \ref{fig:100_reset_1}, the error decreases as the GP gathers more data. Although this does not conclusively prove that the learning is happening as expected, it does show that for the most part, gympy is effectively interfacing between GPy and OpenAI gym.
+
+To ensure that success of the experiment wasn't a consequence of random coincidence, the program was run 10 times, and the average percentage errors are plotted below.
+
+\begin{figure}[H] \centering \scalebox{0.45} {\includegraphics{30_reset_average.eps}}\caption{The plot of average percentage error vs the number of iterations. The shaded regions show the 95\% confidence intervals ($2 \times$ standard deviation) for each of the states.}\label{fig:100_reset_1}
+\end{figure}
+
+\section{Testing GP regression on Toy data} \label{sec:toy_data_intro}
+
+As mentioned previously, it was necessary to ensure that the algorithm that was developed worked as intended, and an easy way to do this was to test it on toy data. It can be said that the previous section illustrates that the GP is capable of learning quite quickly. However, it must be noted that the analysis carried out was not rigorous; this section attempts to find comprehensive proof of those conclusions. 
+
+Prior to testing the full algorithm, the ability for the model $f_w$ to predict future states, given the current state and action to be taken was tested using the following function as the `real world'.  
+
+\begin{equation} \label{toy_data_function} f_t(s_t,a_t) = 10\sin(a_t) + s_t, \quad \mathrm{where} \: -\pi < a_t < +\pi   \end{equation}
+
+This function was chosen because it is non-linear, and also has the potential to reach $s_{t+1} = \pm \infty$. This means that it can test learned GP's ability to predict in unknown regimes. Figure \ref{fig:toy_data_1} shows the results obtained for preliminary tests with the function above. For this, a random action was selected for continuous states, that is the problem wasn't reset every iteration.
+
+\begin{figure}[H] \centering \scalebox{0.5} {\includegraphics{toy_data_1.eps}}\caption{A plot of the state evolution for real and predicted toy data. The percentage error, as defined by Equation \ref{eq:prediction_error}, is shown in red.}\label{fig:toy_data_1}
+\end{figure}
+
+This clearly shows that the GP is doing what is expected of it. However, further analysis will need to be done regarding what regimes of the data provided the results above, and what would happen if the training data we dissimilar to this. Furthermore, the algorithm shown in Section \ref{sec:proposed_solution} will be tested, before moving on to more complex problems.
+%
+\\
+%
+\section{Future Work} \label{sec:future_work}
+
+As mentioned previously, the next step will be to further evaluate the results obtained from the toy data, and to apply an algorithm that follow logic similar to Figure \ref{fig:proposed_solution}. 
+
+Following on from this, the algorithm will be upgraded for use on OpenAI gym once again, and be tested on the inverted pendulum. Initially, a linear policy will be used on the linear problem of \emph{keeping} a pendulum inverted; the harder problem of swinging the pendulum and keeping it there will be tackled with the non-linear policy once the former has been properly tested.
+
+The algorithm will then be applied to the iCub Simulator and then finally to the iCub, once it passes the testing stages. 

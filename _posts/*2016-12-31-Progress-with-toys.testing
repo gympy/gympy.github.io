@@ -1,0 +1,53 @@
+---
+layout: post
+title:  "Progress with some toys"
+date:   2016-12-31 01:59:21 +0100
+categories: jekyll update
+---
+
+Progress with some toys
+================
+
+Testing GP regression on Toy data {#sec:toy_data_intro}
+---------------------------------
+
+As mentioned [previously](https://gympy.github.io/jekyll/update/2016/11/24/First-RL.html), it was necessary to ensure that the algorithm
+that was developed worked as intended, and an easy way to do this was to
+test it on toy data. A key issue that was noted was that the model was not learning very well, with the percentage errors always being above approximately 10/%.
+
+Prior to testing the full algorithm, the ability for the model $f_w$ to
+predict future states, given the current state and action to be taken
+was tested using the following function as the ‘real world’.
+
+$$\label{toy_data_function} f_t(s_t,a_t) = 10\sin(a_t) + s_t, \quad \mathrm{where} \: -\pi < a_t < +\pi$$
+
+This function was chosen because it is non-linear, and also has the
+potential to reach $s_{t+1} = \pm \infty$. This means that it can test
+learned GP’s ability to predict in unknown regimes. The figure below shows the results obtained for preliminary tests
+with the function above. For this, a random action was selected for
+continuous states, that is the problem wasn’t reset every iteration.
+
+![Figure 1]({{site_url}}/pictures/current_progress/Figure1.pdf){: .center-image }
+
+This clearly shows that the GP is doing what is expected of it. However,
+further analysis will need to be done regarding what regimes of the data
+provided the results above, and what would happen if the training data
+we dissimilar to this. Furthermore, the algorithm shown in the previous post will be tested, before moving on to more
+complex problems.\
+
+Future Work {#sec:future_work}
+-----------
+
+As mentioned previously, the next step will be to further evaluate the
+results obtained from the toy data, and to apply an algorithm that
+follow logic similar to Figure \[fig:proposed\_solution\].
+
+Following on from this, the algorithm will be upgraded for use on OpenAI
+gym once again, and be tested on the inverted pendulum. Initially, a
+linear policy will be used on the linear problem of *keeping* a pendulum
+inverted; the harder problem of swinging the pendulum and keeping it
+there will be tackled with the non-linear policy once the former has
+been properly tested.
+
+The algorithm will then be applied to the iCub Simulator and then
+finally to the iCub, once it passes the testing stages.
